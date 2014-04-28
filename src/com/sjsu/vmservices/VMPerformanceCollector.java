@@ -139,7 +139,7 @@ public class VMPerformanceCollector {
 
 				/*String propName = String.format("[%s.%s]", info.getNameInfo().getKey(), 
 						info.getRollupType());*/
-				String propName =  String.format("%s.%s", info.getGroupInfo().getKey(), info.getNameInfo().getKey());
+				String propName =  String.format("%s_%s", info.getGroupInfo().getKey(), info.getNameInfo().getKey());
 				//System.out.println("Property Name:"+propName);
 				properties.put(propName, value);
 			}
@@ -149,16 +149,16 @@ public class VMPerformanceCollector {
 	}
 
 	public static void main(String[] args) throws Exception {
-		while (true) {
 			VMPerformanceCollector perColl = new VMPerformanceCollector(
 					new URL(ConstantUtil.URL), ConstantUtil.ADMIN_USER_NAME,
 					ConstantUtil.ADMIN_PASSWORD, 3);
+			while (true) {
 			for (VirtualMachine vm : perColl.getVmList()) {
 				//System.out.println("--->"+vm.getName());
 				StringBuffer str = new StringBuffer();
 				str.append(vm.getName());
-				if ("T02-VM02".equals(vm.getName())
-						|| "T02-VM01".equals(vm.getName())) {
+				if ("VM02".equals(vm.getName())
+						|| "VM01".equals(vm.getName())) {
 
 					HashMap<String, HashMap<String, String>> metricsMap = perColl
 							.getPerformanceMetrics(vm.getName());
@@ -185,8 +185,8 @@ public class VMPerformanceCollector {
 						//str.append(" ");
 						for (String p : metricProps.keySet()) {
 							//System.out.println("P is "+p);
-							if (ConstantUtil.paramterList.contains(p)) {
-								str.append(" " + metricProps.get(p));
+							if (ConstantUtil.PARAMETER_LIST.contains(p)) {
+								str.append(" " + p + ":" + metricProps.get(p));
 								//System.out.println("\t" + p + ": " + metricProps.get(p));
 							}
 						}
